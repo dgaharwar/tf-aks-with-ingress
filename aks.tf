@@ -30,11 +30,11 @@ variable resgrp {
  type = string
 }
 
-variable tenantId{
+variable tenantId {
  type = string
 }
 
-variable subscriptionId{
+variable subscriptionId {
  type = string
 }
 
@@ -44,7 +44,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 1.1.0"
     }
-	kubectl = {
+  kubectl = {
       source  = "gavinbunney/kubectl"
       version = ">= 1.14.0"
     }
@@ -56,9 +56,9 @@ provider "azurerm" {
   features {}
 
   subscription_id = var.subscriptionId
-  client_id       = var.clientId
-  client_secret   = var.clientSecret
   tenant_id       = var.tenantId
+  client_id       = "<%=cypher.read('secret/appid_service_principal')%>"
+  client_secret   = "<%=cypher.read('password/service_principal')%>"
   skip_provider_registration = true
 }
 
