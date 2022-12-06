@@ -4,18 +4,21 @@ variable "location" {
 }
 
 variable "dnsprefix" {
-  type    = string
+  type        = string
   description = "DNS prefix must contain between 2 and 45 characters. The name can contain only letters, numbers, and hyphens."
+  default     = "dgdns"
 }
 
 variable "clusterName" {
-  type = string
+  type        = string
   description = "Cluster Name must contain between 2 and 45 characters. The name can contain only letters, numbers, and hyphens."
+  default     = "dgakstest"
 }
 
 variable "acrName" {
-  type = string
+  type        = string
   description = "Set Container Registry Name. Name can contain only alphanumeric values."
+  default     = "dgacr123"
 }
 
 variable "clientId" {
@@ -44,7 +47,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 1.1.0"
     }
-  kubectl = {
+	kubectl = {
       source  = "gavinbunney/kubectl"
       version = ">= 1.14.0"
     }
@@ -56,9 +59,9 @@ provider "azurerm" {
   features {}
 
   subscription_id = var.subscriptionId
-  tenant_id       = var.tenantId
   client_id       = var.clientId
   client_secret   = var.clientSecret
+  tenant_id       = var.tenantId
   skip_provider_registration = true
 }
 
@@ -142,15 +145,15 @@ provider "kubectl" {
 data "kubectl_path_documents" "docs" {
     pattern = "./manifests/ingress.yaml"
     vars = {
-      aks_cluster_name = var.clusterName
-      resgrp           = var.resgrp
-      public_lb_ip     = azurerm_public_ip.example.id
+        aks_cluster_name = var.clusterName
+		resgrp           = var.resgrp
+		public_lb_ip     = azurerm_public_ip.example.id
     }
 }
 
 resource "kubectl_manifest" "example" {
-    count     = length(data.kubectl_path_documents.docs.documents)
-    yaml_body = element(data.kubectl_path_documents.docs.documents, count.index)
+    for_each  = toset(data.kubectl_path_documents.docs.manifests)
+    yaml_body = each.value
 }
 
 output "aks_public_dns" {
