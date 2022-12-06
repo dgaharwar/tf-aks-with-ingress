@@ -1,6 +1,6 @@
 variable "location" {
   type    = string
-  default = "central us"
+  default = "centralus"
 }
 
 variable "dnsprefix" {
