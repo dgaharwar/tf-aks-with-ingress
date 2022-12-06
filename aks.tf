@@ -140,17 +140,12 @@ provider "kubectl" {
 }
 
 data "kubectl_path_documents" "docs" {
-    pattern = "./ingress.yaml"
-    vars = {
-        aks_cluster_name = var.clusterName
-        resgrp           = var.resgrp
-	public_lb_ip     = azurerm_public_ip.example.id
-    }
+    pattern = "./manifests/ingress.yaml"
 }
 
 resource "kubectl_manifest" "example" {
-    for_each  = toset(data.kubectl_path_documents.docs.documents)
-    yaml_body = each.value
+    count     = length(data.kubectl_path_documents.docs.documents)
+    yaml_body = element(data.kubectl_path_documents.docs.documents, count.index)
 }
 
 output "aks_public_dns" {
