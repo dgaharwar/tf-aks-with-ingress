@@ -18,13 +18,13 @@ variable "acrName" {
   description = "Set Container Registry Name. Name can contain only alphanumeric values."
 }
 
-#variable "clientId" {
-#  type = string
-#}
+variable "clientId" {
+  type = string
+}
 
-#variable "clientSecret" {
-#  type = string
-#}
+variable "clientSecret" {
+  type = string
+}
 
 variable "resgrp" {
  type = string
@@ -57,8 +57,8 @@ provider "azurerm" {
 
   subscription_id = var.subscriptionId
   tenant_id       = var.tenantId
-  client_id       = "<%=cypher.read('secret/appid_service_principal')%>"
-  client_secret   = "<%=cypher.read('password/service_principal')%>"
+  client_id       = var.clientId
+  client_secret   = var.clientSecret
   skip_provider_registration = true
 }
 
