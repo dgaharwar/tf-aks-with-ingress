@@ -143,8 +143,8 @@ data "kubectl_path_documents" "docs" {
     pattern = "./manifests/ingress.yaml"
     vars = {
     aks_cluster_name = var.clusterName
-		resgrp           = var.resgrp
-		public_lb_ip     = azurerm_public_ip.example.id
+    resgrp           = var.resgrp
+    public_lb_ip     = azurerm_public_ip.example.id
     }
 }
 
