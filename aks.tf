@@ -18,13 +18,13 @@ variable "acrName" {
   description = "Set Container Registry Name. Name can contain only alphanumeric values."
 }
 
-variable "clientId" {
-  type = string
-}
+#variable "clientId" {
+#  type = string
+#}
 
-variable "clientSecret" {
-  type = string
-}
+#variable "clientSecret" {
+#  type = string
+#}
 
 variable "resgrp" {
  type = string
