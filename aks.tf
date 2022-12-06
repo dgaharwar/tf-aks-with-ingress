@@ -139,8 +139,8 @@ provider "kubectl" {
   load_config_file       = false
 }
 
-data "kubectl_path_documents" "manifests" {
-    pattern = "./manifests/ingress.yaml"
+data "kubectl_path_documents" "docs" {
+    pattern = "./ingress.yaml"
     vars = {
         aks_cluster_name = var.clusterName
         resgrp           = var.resgrp
@@ -149,7 +149,7 @@ data "kubectl_path_documents" "manifests" {
 }
 
 resource "kubectl_manifest" "example" {
-    for_each  = toset(data.kubectl_path_documents.manifests.manifests)
+    for_each  = toset(data.kubectl_path_documents.docs.documents)
     yaml_body = each.value
 }
 
