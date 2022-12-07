@@ -21,13 +21,13 @@ variable "acrName" {
   default     = "dgacr123"
 }
 
-variable "clientId" {
-  type = string
-}
+#variable "clientId" {
+#  type = string
+#}
 
-variable "clientSecret" {
-  type = string
-}
+#variable "clientSecret" {
+#  type = string
+#}
 
 variable "resgrp" {
  type = string
@@ -59,8 +59,8 @@ provider "azurerm" {
   features {}
 
   subscription_id = var.subscriptionId
-  client_id       = var.clientId
-  client_secret   = var.clientSecret
+  client_id       = "<%=cypher.read('secret/appid_service_principal')%>"
+  client_secret   = "<%=cypher.read('password/service_principal')%>"
   tenant_id       = var.tenantId
   skip_provider_registration = true
 }
