@@ -142,17 +142,17 @@ provider "kubectl" {
   load_config_file       = false
 }
 
-data "kubectl_path_documents" "docs" {
-    pattern = "./manifests/ingress.yaml"
+data "kubectl_file_documents" "docs" {
+    content = file("ingress.yaml")
     vars = {
         aks_cluster_name = var.clusterName
-		resgrp           = var.resgrp
-		public_lb_ip     = azurerm_public_ip.example.id
+	resgrp           = var.resgrp
+	public_lb_ip     = azurerm_public_ip.example.id
     }
 }
 
 resource "kubectl_manifest" "example" {
-    for_each  = toset(data.kubectl_path_documents.docs.manifests)
+    for_each  = data.kubectl_file_documents.docs.manifests
     yaml_body = each.value
 }
 
